@@ -1,16 +1,38 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Bankomat_John_Albrektsson
 {
     internal class Program
     {
+
         static void Main(string[] args)
         {
-            Login();
+            decimal[,] bankaccounts = new decimal[5, 5];
+            bankaccounts[0, 0] = 200m;
+            bankaccounts[0, 1] = 230.35m;
+            bankaccounts[0, 2] = 330.70m;
+
+            bankaccounts[1, 0] = 700;
+            bankaccounts[1, 1] = 300.57m;
+
+            bankaccounts[2, 0] = 236m;
+            bankaccounts[2, 1] = 2360m;
+            bankaccounts[2, 2] = 2570.13m;
+            bankaccounts[2, 3] = 1230.50m;
+
+            bankaccounts[3, 0] = 750.34m;
+            bankaccounts[3, 1] = 7800.4m;
+            bankaccounts[3, 2] = 1230m;
+
+            bankaccounts[4, 0] = 1230m;
+            bankaccounts[4, 1] = 1230m;
+            Login(bankaccounts);
         }
-        public static void Login() //Starts the login process 
+        public static void Login(decimal [,]bankaccounts) //Starts the login process 
         {
             int attempts = 0;
+            int id;
             string[,] accounts = new string[5, 2]; //2D array with usernames and passwords
 
 
@@ -30,24 +52,28 @@ namespace Bankomat_John_Albrektsson
                 string password = Console.ReadLine();
                 if (username == accounts[0, 0] && password == accounts[0, 1]) //Checks if user 1s username and password match
                 {
-                    Menu();
-                    
+                    id = 0;
+                    Menu(id, bankaccounts);
                 }
                 else if (username == accounts[1, 0] && password == accounts[1, 1]) //Checks if user 2s username and password match
                 {
-                    Menu();
+                    id = 1;
+                    Menu(id, bankaccounts);
                 }
                 else if (username == accounts[2, 0] && password == accounts[2, 1]) //Checks if user 3s username and password match
                 {
-                    Menu();
+                    id = 2;
+                    Menu(id, bankaccounts);
                 }
                 else if (username == accounts[3, 0] && password == accounts[3, 1]) //Checks if user 4s username and password match
                 {
-                    Menu();
+                    id = 3;
+                    Menu(id, bankaccounts);
                 }
                 else if (username == accounts[4, 0] && password == accounts[4, 1]) //Checks if user 5s username and password match
                 {
-                    Menu();
+                    id = 4;
+                    Menu(id, bankaccounts);
                 }
                 else
                 {
@@ -56,13 +82,14 @@ namespace Bankomat_John_Albrektsson
                 }
             } while (attempts <3);
         }
-        public static void Menu() //Opens a menu with different choices for the user
+        public static void Menu(int id, decimal [,]bankaccounts) //Opens a menu with different choices for the user
         {
             Console.WriteLine("Vad vill du göra?");
             Console.WriteLine("1. Se dina konton och saldo");
             Console.WriteLine("2. Överföring mellan konton");
             Console.WriteLine("3. Ta ut pengar");
             Console.WriteLine("4. Logga ut");
+
             bool correctinp = false;
             do
             {
@@ -71,17 +98,21 @@ namespace Bankomat_John_Albrektsson
                 {
                     case "1":
                         correctinp = true;
+                        
+                        Showusermoney(id, bankaccounts);
                         break;
 
                     case "2":
                         correctinp = true;
+                        
+                        Showusermoney(id, bankaccounts);
                         break;
                     case "3":
                         correctinp = true;
                         break;
                     case "4":
                         correctinp = true;
-                        Login();
+                        Login(bankaccounts);
 
                         break;
                     default:
@@ -91,5 +122,27 @@ namespace Bankomat_John_Albrektsson
                 }
             } while (correctinp == false);
         }
+
+        public static void Showusermoney(int id, decimal[,]bankaccounts) //Shows the users bankaccounts
+        {
+            string[] accounttype = new string[4];
+            accounttype[0] = "Kort";
+            accounttype[1] = "Sparkonto";
+            accounttype[2] = "Lönekonto";
+            accounttype[3] = "Pensionskonto";
+
+            for (int i = 0; i < bankaccounts.GetLength(0); i++)
+            {
+                if (bankaccounts[id, i] !=0)
+                {
+                    Console.WriteLine("Du har {0} kr på ditt {1}",bankaccounts[id, i], accounttype[i]);
+                }
+            }
+
+            Console.WriteLine("Klicka enter för att komma till huvudmenyn");
+            Console.ReadKey();
+            Menu(id, bankaccounts);
+        }
+       
     }
 }
