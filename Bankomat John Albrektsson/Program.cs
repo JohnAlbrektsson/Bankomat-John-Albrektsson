@@ -28,6 +28,7 @@ namespace Bankomat_John_Albrektsson
             bankaccounts[4, 0] = 1230m;
             bankaccounts[4, 1] = 1230m;
             Login(bankaccounts);
+            
         }
         public static void Login(decimal [,]bankaccounts) //Starts the login process 
         {
@@ -84,6 +85,7 @@ namespace Bankomat_John_Albrektsson
         }
         public static void Menu(int id, decimal [,]bankaccounts) //Opens a menu with different choices for the user
         {
+            Console.Clear();
             Console.WriteLine("Vad vill du göra?");
             Console.WriteLine("1. Se dina konton och saldo");
             Console.WriteLine("2. Överföring mellan konton");
@@ -105,7 +107,7 @@ namespace Bankomat_John_Albrektsson
                     case "2":
                         correctinp = true;
                         
-                        Showusermoney(id, bankaccounts);
+                        Transfermoney(id, bankaccounts);
                         break;
                     case "3":
                         correctinp = true;
@@ -130,8 +132,8 @@ namespace Bankomat_John_Albrektsson
             accounttype[1] = "Sparkonto";
             accounttype[2] = "Lönekonto";
             accounttype[3] = "Pensionskonto";
-
-            for (int i = 0; i < bankaccounts.GetLength(0); i++)
+            Console.Clear();
+            for (int i = 0; i < bankaccounts.GetLength(0); i++) // Writes out all accounts the user has
             {
                 if (bankaccounts[id, i] !=0)
                 {
@@ -143,6 +145,38 @@ namespace Bankomat_John_Albrektsson
             Console.ReadKey();
             Menu(id, bankaccounts);
         }
-       
+        public static void Transfermoney(int id, decimal[,]bankaccounts) //Starts method to transfer money from one account to another
+        {
+            string[] accounttype = new string[4];
+            accounttype[0] = "Kort";
+            accounttype[1] = "Sparkonto";
+            accounttype[2] = "Lönekonto";
+            accounttype[3] = "Pensionskonto";
+
+            for (int i = 0; i < bankaccounts.GetLength(0); i++) //Lists the accounts that the user can transfer from and to
+            {
+                if (bankaccounts[id, i] !=0)
+                {
+                    Console.WriteLine("{0}: {1} {2} kr",i, accounttype[i], bankaccounts[id, i]);
+                }
+            }
+
+            Console.WriteLine("Vilket konto vill du överföra från?");
+            int transferfrom = int.Parse(Console.ReadLine());
+            Console.WriteLine("Vilket konto vill du överföra till?");
+            int transferto = int.Parse(Console.ReadLine());
+            Console.WriteLine("Hur mycket vill du överföra?");
+            decimal ammount = decimal.Parse(Console.ReadLine());
+
+         
+
+            bankaccounts[id, transferfrom] = bankaccounts[id, transferfrom] - ammount; //subtracts the specified ammount 
+            bankaccounts[id, transferto] = bankaccounts[id, transferto] + ammount; //adds the specified ammount
+
+           
+            Console.WriteLine("Klicka enter för att komma till huvudmenyn");
+            Console.ReadKey();
+            Menu(id, bankaccounts);
+        }
     }
 }
