@@ -152,26 +152,53 @@ namespace Bankomat_John_Albrektsson
             accounttype[1] = "Sparkonto";
             accounttype[2] = "Lönekonto";
             accounttype[3] = "Pensionskonto";
+            Console.Clear();
 
             for (int i = 0; i < bankaccounts.GetLength(0); i++) //Lists the accounts that the user can transfer from and to
             {
                 if (bankaccounts[id, i] !=0)
                 {
-                    Console.WriteLine("{0}: {1} {2} kr",i, accounttype[i], bankaccounts[id, i]);
+                    Console.WriteLine("{0}: {1} {2} kr",i + 1 ,accounttype[i], bankaccounts[id, i]);
                 }
             }
+            try
+            {
+                Console.WriteLine("Vilket konto vill du överföra från?");
+                int transferfrom = int.Parse(Console.ReadLine());
+                Console.WriteLine("Vilket konto vill du överföra till?");
+                int transferto = int.Parse(Console.ReadLine());
+                Console.WriteLine("Hur mycket vill du överföra?");
+                decimal ammount = decimal.Parse(Console.ReadLine());
 
-            Console.WriteLine("Vilket konto vill du överföra från?");
-            int transferfrom = int.Parse(Console.ReadLine());
-            Console.WriteLine("Vilket konto vill du överföra till?");
-            int transferto = int.Parse(Console.ReadLine());
-            Console.WriteLine("Hur mycket vill du överföra?");
-            decimal ammount = decimal.Parse(Console.ReadLine());
+                if (ammount > bankaccounts[id, transferfrom -1])
+                {
+                    Console.WriteLine("Det finns inte så mycket pengar på ditt {0}, försök igen", accounttype[transferfrom -1]);
+                    Transfermoney(id, bankaccounts);
+                    Console.Clear();
+                }
+                switch (transferfrom -1)
+                {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                        bankaccounts[id, transferfrom-1] = bankaccounts[id, transferfrom -1] - ammount; //subtracts the specified ammount 
+                        bankaccounts[id, transferto-1] = bankaccounts[id, transferto-1] + ammount; //adds the specified ammount
 
-         
+                        Console.WriteLine("Du har nu {0} kr på ditt {1} och {2} kr på ditt {3}", bankaccounts[id, transferfrom - 1], accounttype[transferfrom -1], bankaccounts[id, transferto-1], accounttype[transferto -1]);
+                        break;
+                    default:
+                        Console.WriteLine("Detta konto existerar inte, försök igen");
+                        Transfermoney(id, bankaccounts);
+                        break;
+                }
+            }catch(Exception)
+            {
+                Console.WriteLine("Ogiltigt input, klicka enter för att försöka igen");
+                Console.ReadKey();
+                Transfermoney(id, bankaccounts);
+            }
 
-            bankaccounts[id, transferfrom] = bankaccounts[id, transferfrom] - ammount; //subtracts the specified ammount 
-            bankaccounts[id, transferto] = bankaccounts[id, transferto] + ammount; //adds the specified ammount
 
            
             Console.WriteLine("Klicka enter för att komma till huvudmenyn");
