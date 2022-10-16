@@ -26,7 +26,7 @@ namespace Bankomat_John_Albrektsson
             bankaccounts[3, 2] = 1230m;
 
             bankaccounts[4, 0] = 1230m;
-            bankaccounts[4, 1] = 1230m;
+            bankaccounts[4, 1] = 7604.12m;
             Login(bankaccounts);
 
         }
@@ -37,11 +37,11 @@ namespace Bankomat_John_Albrektsson
             string[,] accounts = new string[5, 2]; //2D array with usernames and passwords
 
 
-            accounts[0, 0] = "John"; accounts[0, 1] = "1475";
-            accounts[1, 0] = "Hanna"; accounts[1, 1] = "1999";
-            accounts[2, 0] = "Sven"; accounts[2, 1] = "1341";
-            accounts[3, 0] = "Anette"; accounts[3, 1] = "8282";
-            accounts[4, 0] = "Simon"; accounts[4, 1] = "7423";
+            accounts[0, 0] = "JOHN"; accounts[0, 1] = "1475";
+            accounts[1, 0] = "HANNA"; accounts[1, 1] = "1999";
+            accounts[2, 0] = "SVEN"; accounts[2, 1] = "1341";
+            accounts[3, 0] = "ANETTE"; accounts[3, 1] = "8282";
+            accounts[4, 0] = "SIMON"; accounts[4, 1] = "7423";
 
             Console.WriteLine("Välkommen!");
 
@@ -51,27 +51,27 @@ namespace Bankomat_John_Albrektsson
                 string username = Console.ReadLine();
                 Console.WriteLine("Skriv in ditt lösenord:");
                 string password = Console.ReadLine();
-                if (username == accounts[0, 0] && password == accounts[0, 1]) //Checks if user 1s username and password match
+                if (username.ToUpper() == accounts[0, 0] && password == accounts[0, 1]) //Checks if user 1s username and password match
                 {
                     id = 0;
                     Menu(id, accounts, bankaccounts);
                 }
-                else if (username == accounts[1, 0] && password == accounts[1, 1]) //Checks if user 2s username and password match
+                else if (username.ToUpper() == accounts[1, 0] && password == accounts[1, 1]) //Checks if user 2s username and password match
                 {
                     id = 1;
                     Menu(id, accounts, bankaccounts);
                 }
-                else if (username == accounts[2, 0] && password == accounts[2, 1]) //Checks if user 3s username and password match
+                else if (username.ToUpper() == accounts[2, 0] && password == accounts[2, 1]) //Checks if user 3s username and password match
                 {
                     id = 2;
                     Menu(id, accounts, bankaccounts);
                 }
-                else if (username == accounts[3, 0] && password == accounts[3, 1]) //Checks if user 4s username and password match
+                else if (username.ToUpper() == accounts[3, 0] && password == accounts[3, 1]) //Checks if user 4s username and password match
                 {
                     id = 3;
                     Menu(id, accounts, bankaccounts);
                 }
-                else if (username == accounts[4, 0] && password == accounts[4, 1]) //Checks if user 5s username and password match
+                else if (username.ToUpper() == accounts[4, 0] && password == accounts[4, 1]) //Checks if user 5s username and password match
                 {
                     id = 4;
                     Menu(id, accounts, bankaccounts);
@@ -93,10 +93,10 @@ namespace Bankomat_John_Albrektsson
             Console.WriteLine("4. Logga ut");
 
             bool correctinp = false;
-            do
+            do // do/while to make sure
             {
                 string menuchoice = Console.ReadLine();
-                switch (menuchoice)
+                switch (menuchoice) // Switch to check which menu choice the user made
                 {
                     case "1":
                         correctinp = true;
@@ -204,7 +204,7 @@ namespace Bankomat_John_Albrektsson
             Console.ReadKey();
             Menu(id, accounts ,bankaccounts);
         }
-        public static void Withdrawmoney(int id,string [,]accounts, decimal[,] bankaccounts)
+        public static void Withdrawmoney(int id,string [,]accounts, decimal[,] bankaccounts) //Method for withdrawing money
         {
             string[] accounttype = new string[4];
             accounttype[0] = "Kort";
@@ -261,7 +261,7 @@ namespace Bankomat_John_Albrektsson
                         {
                             Console.WriteLine("Fel pinkod, du har {0} försök kvar",i);
                         }
-                        if(i == 0)
+                        if(i == 0) //if all the attempts to write pin is used, the user is sent to the menu
                         {
                             Console.Clear();
                             Console.WriteLine("Du har angivit fel pinkod för många gånger, klicka enter för att gå tillbaka till menyn");
