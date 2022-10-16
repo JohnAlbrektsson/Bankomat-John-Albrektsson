@@ -177,23 +177,21 @@ namespace Bankomat_John_Albrektsson
                     Transfermoney(id,accounts, bankaccounts);
                     Console.Clear();
                 }
-                switch (transferfrom -1)
+                if (transferfrom -1 > 4 || transferto -1 >4) //checks if the bankaccounts exists
                 {
-                    case 0:
-                    case 1:
-                    case 2:
-                    case 3:
-                        bankaccounts[id, transferfrom-1] = bankaccounts[id, transferfrom -1] - ammount; //subtracts the specified ammount 
-                        bankaccounts[id, transferto-1] = bankaccounts[id, transferto-1] + ammount; //adds the specified ammount
-
-                        Console.WriteLine("Du har nu {0} kr på ditt {1} och {2} kr på ditt {3}", bankaccounts[id, transferfrom - 1], accounttype[transferfrom -1], bankaccounts[id, transferto-1], accounttype[transferto -1]);
-                        break;
-                    default:
-                        Console.WriteLine("Detta konto existerar inte, försök igen");
-                        Transfermoney(id,accounts, bankaccounts);
-                        break;
+                    Console.WriteLine("Detta konto existerar inte, försök igen");
+                    Transfermoney(id, accounts, bankaccounts);
+                    Console.Clear();
                 }
-            }catch(Exception)
+                else
+                {
+                    bankaccounts[id, transferfrom-1] = bankaccounts[id, transferfrom -1] - ammount; //subtracts the specified ammount 
+                    bankaccounts[id, transferto-1] = bankaccounts[id, transferto-1] + ammount; //adds the specified ammount
+
+                    Console.WriteLine("Du har nu {0} kr på ditt {1} och {2} kr på ditt {3}", bankaccounts[id, transferfrom - 1], accounttype[transferfrom -1], bankaccounts[id, transferto-1], accounttype[transferto -1]);
+                }
+            }
+            catch(Exception)
             {
                 Console.WriteLine("Ogiltigt input, klicka enter för att försöka igen");
                 Console.ReadKey();
@@ -229,17 +227,36 @@ namespace Bankomat_John_Albrektsson
                 int withdrawfrom = int.Parse(Console.ReadLine());
                 Console.WriteLine("Hur mycket vill du ta ut?");
                 decimal ammount = decimal.Parse(Console.ReadLine());
-                Console.WriteLine("Skriv in din pinkod för att genomföra ditt uttag");
-                string pass = Console.ReadLine();
-                if (pass == accounts[id, 1])
+                
+                if (ammount > bankaccounts[id, withdrawfrom -1]) //Checks if the user input is higher than what exists
                 {
-                    bankaccounts[id, withdrawfrom -1] = bankaccounts[id, withdrawfrom -1] - ammount; //withdraws the specified ammount
-                    Console.WriteLine("{0} kr har tagits ut från {1}", ammount, accounttype[withdrawfrom -1]);
+                    Console.WriteLine("Det finns inte så mycket pengar att ta ut på ditt {0}, klicka på enter för att försöka igen", accounttype[withdrawfrom -1]);
+                    Console.ReadKey();
+                    Transfermoney(id, accounts, bankaccounts);
+                    
+                }
+                if(withdrawfrom -1 >4)
+                {
+                    Console.WriteLine("Det angivna kontot existerar inte, klicka på enter för att försöka igen");
+                    Console.ReadKey();
+                    Transfermoney(id, accounts, bankaccounts);
+                    
                 }
                 else
                 {
-                    Console.WriteLine("Fel pinkod, ");
+                    Console.WriteLine("Skriv in din pinkod för att genomföra ditt uttag");
+                    string pass = Console.ReadLine();
+                    if (pass == accounts[id, 1]) //Checks if the pin is correct
+                    {
+                        bankaccounts[id, withdrawfrom -1] = bankaccounts[id, withdrawfrom -1] - ammount; //withdraws the specified ammount
+                        Console.WriteLine("{0} kr har tagits ut från {1}", ammount, accounttype[withdrawfrom -1]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Fel pinkod, ");
+                    }
                 }
+                
             }
             catch (Exception)
             {
