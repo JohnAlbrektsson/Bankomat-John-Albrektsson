@@ -37,11 +37,11 @@ namespace Bankomat_John_Albrektsson
             string[,] accounts = new string[5, 2]; //2D array with usernames and passwords
 
 
-            accounts[0, 0] = "00"; accounts[0, 1] = "01";
-            accounts[1, 0] = "10"; accounts[1, 1] = "11";
-            accounts[2, 0] = "20"; accounts[2, 1] = "21";
-            accounts[3, 0] = "30"; accounts[3, 1] = "31";
-            accounts[4, 0] = "40"; accounts[4, 1] = "41";
+            accounts[0, 0] = "John"; accounts[0, 1] = "1475";
+            accounts[1, 0] = "Hanna"; accounts[1, 1] = "1999";
+            accounts[2, 0] = "Sven"; accounts[2, 1] = "1341";
+            accounts[3, 0] = "Anette"; accounts[3, 1] = "8282";
+            accounts[4, 0] = "Simon"; accounts[4, 1] = "7423";
 
             Console.WriteLine("Välkommen!");
 
@@ -171,7 +171,7 @@ namespace Bankomat_John_Albrektsson
                 Console.WriteLine("Hur mycket vill du överföra?");
                 decimal ammount = decimal.Parse(Console.ReadLine());
 
-                if (ammount > bankaccounts[id, transferfrom -1])
+                if (ammount > bankaccounts[id, transferfrom -1]) //Checks if the user input is higher than what exists
                 {
                     Console.WriteLine("Det finns inte så mycket pengar på ditt {0}, försök igen", accounttype[transferfrom -1]);
                     Transfermoney(id,accounts, bankaccounts);
@@ -191,7 +191,7 @@ namespace Bankomat_John_Albrektsson
                     Console.WriteLine("Du har nu {0} kr på ditt {1} och {2} kr på ditt {3}", bankaccounts[id, transferfrom - 1], accounttype[transferfrom -1], bankaccounts[id, transferto-1], accounttype[transferto -1]);
                 }
             }
-            catch(Exception)
+            catch(Exception) 
             {
                 Console.WriteLine("Ogiltigt input, klicka enter för att försöka igen");
                 Console.ReadKey();
@@ -235,7 +235,7 @@ namespace Bankomat_John_Albrektsson
                     Transfermoney(id, accounts, bankaccounts);
                     
                 }
-                if(withdrawfrom -1 >4)
+                if(withdrawfrom -1 >4) //Checks if the bankaccount the user input exists
                 {
                     Console.WriteLine("Det angivna kontot existerar inte, klicka på enter för att försöka igen");
                     Console.ReadKey();
@@ -245,15 +245,29 @@ namespace Bankomat_John_Albrektsson
                 else
                 {
                     Console.WriteLine("Skriv in din pinkod för att genomföra ditt uttag");
-                    string pass = Console.ReadLine();
-                    if (pass == accounts[id, 1]) //Checks if the pin is correct
+                    for (int i = 2; i>=0; i--) //For loop to give the user 3 attemps to write the correct pin
                     {
-                        bankaccounts[id, withdrawfrom -1] = bankaccounts[id, withdrawfrom -1] - ammount; //withdraws the specified ammount
-                        Console.WriteLine("{0} kr har tagits ut från {1}", ammount, accounttype[withdrawfrom -1]);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Fel pinkod, ");
+                        string pass = Console.ReadLine();
+                        if (pass == accounts[id, 1]) //Checks if the pin is correct
+                        {
+                            bankaccounts[id, withdrawfrom -1] = bankaccounts[id, withdrawfrom -1] - ammount; //withdraws the specified ammount
+                            Console.WriteLine("{0} kr har tagits ut från {1}", ammount, accounttype[withdrawfrom -1]);
+                            Console.WriteLine("Du har nu {0} kr kvar på ditt {1}", bankaccounts[id,withdrawfrom -1], accounttype[withdrawfrom-1]);
+                            Console.WriteLine("Klicka enter för att komma tillbaka till menyn");
+                            Console.ReadKey();
+                            Menu(id, accounts, bankaccounts);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Fel pinkod, du har {0} försök kvar",i);
+                        }
+                        if(i == 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Du har angivit fel pinkod för många gånger, klicka enter för att gå tillbaka till menyn");
+                            Console.ReadKey();
+                            Menu(id, accounts, bankaccounts);
+                        }
                     }
                 }
                 
